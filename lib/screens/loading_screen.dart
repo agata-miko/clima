@@ -1,8 +1,12 @@
-import 'dart:io';
 
+import 'dart:io';
+import 'package:clima/services/networking.dart';
 import 'package:flutter/material.dart';
 import '../services/location.dart';
-import 'package:http/http.dart' as http;
+import '../services/networking.dart';
+
+
+const apiKey = '660541e452c31150cacc1af4d2b53817';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -10,28 +14,27 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+  double? latitude;
+  double? longitude;
+
   @override
   void initState() {
     super.initState();
-    getLocation();
+    getLocationData();
   }
 
-  void getLocation() async {
+  void getLocationData() async {
     Location location = Location();
     await location.getCurrentLocation();
-    double latitude = location.latitude;
-    double longitude = location.longitude;
-    getData(latitude, longitude);
-  }
+    latitude = location.latitude;
+    longitude = location.longitude;
 
-  void getData(double latitude, double longitude) async {
-    http.Response response = await http.get(
-      Uri.parse(
-        'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/$latitude%2C%20$longitude?unitGroup=metric&key=HJULVPDK7GB24E6MDR5TJ9Q9V&contentType=json',
-      ),
-    );
-    print(response.body);
-  }
+    NetworkHelper networkHelper = NetworkHelper('https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey');
+
+    var weatherData = await networkHelper.getData();
+
+
+    }
 
   @override
   Widget build(BuildContext context) {
