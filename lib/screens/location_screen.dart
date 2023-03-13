@@ -5,6 +5,7 @@ import '../services/weather.dart';
 
 class LocationScreen extends StatefulWidget {
   final locationWeather;
+
   LocationScreen({this.locationWeather});
 
   @override
@@ -21,7 +22,6 @@ class _LocationScreenState extends State<LocationScreen> {
 
   @override
   void initState() {
-
     super.initState();
     updateUI(widget.locationWeather);
   }
@@ -42,8 +42,8 @@ class _LocationScreenState extends State<LocationScreen> {
       weatherIcon = weather.getWeatherIcon(condition!);
       weatherMessage = weather.getMessage(temperature!);
     });
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,15 +66,28 @@ class _LocationScreenState extends State<LocationScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   TextButton(
-                    onPressed: () async {var weatherData = await weather.getLocationWeather();
-                      updateUI(weatherData);},
+                    onPressed: () async {
+                      var weatherData = await weather.getLocationWeather();
+                      updateUI(weatherData);
+                    },
                     child: Icon(
                       Icons.near_me,
                       size: 50.0,
                     ),
                   ),
                   TextButton(
-                    onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) {return CityScreen();}),);},
+                    onPressed: () async {
+                      var typedName = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return CityScreen();
+                          },
+                        ),
+                      );
+                      if (typedName != null) {var weatherData = await weather.getCityWeather(typedName);
+                      updateUI(weatherData);}
+                    },
                     child: Icon(
                       Icons.location_city,
                       size: 50.0,
@@ -91,7 +104,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       style: kTempTextStyle,
                     ),
                     Text(
-                       weatherIcon!,
+                      weatherIcon!,
                       style: kConditionTextStyle,
                     ),
                   ],
@@ -112,5 +125,3 @@ class _LocationScreenState extends State<LocationScreen> {
     );
   }
 }
-
-
