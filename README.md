@@ -1,7 +1,7 @@
 # clima
 
-A project from the Udemy course 'The Complete Flutter Development Bootcamp with Dart' by Angela Yu.
+Complete Flutter App Development Bootcamp with Dart | 29h | dr Angela Yu
 
-## description
+Concepts: async, APIs, HTTP, JSON parsing
 
 A weather app using the GPS data from the mobile phone and getting live data from the Internet by the API call. 
